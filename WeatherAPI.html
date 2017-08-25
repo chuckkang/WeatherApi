@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="css/style.css" rel="stylesheet" >
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    </head>
+    Weather API
+    <body>
+        
+
+    <div id="wrapper">
+        <h2>Please enter in a City and State, or a Zip Code</h2>
+        <h3 id="error">There was an error processing your request.</h3>
+            <input type="text" id="txtCity" maxsize="25"> <input type="submit" name="submit" value="submit">
+
+            <div id="weather">
+                 City: <h2 id="city"></h2>
+                 Temp: <h2 id="temp"></h2>
+                 Humidity: <h3 id="humidity"></h3>
+                 Temp High: <h3 id="tempHigh"></h3>
+                Temp Low: <h3 id="tempLow"></h3>
+            </div>
+    </div>
+    </div>
+
+
+    <script>
+$(document).ready(function(){
+///////////////////////////////////////////////////
+
+    $('input[id="txtCity"]').val(''); // clear the form
+    $('#weather h2, h3').val(''); // clear the form
+    //$('#error').hide(); // clear the form
+
+$('input[name="submit"]').click(function(){
+    var txtCity = $('input[id="txtCity"]').val();
+    var zip = 'q=' + $.trim(txtCity);
+    if ($.trim(txtCity)!=='')
+    {
+        //console.log(zip + "--zip");
+        $('input[id="txtCity"]').val(''); // clear the form
+        $('#weather h2, h3').val(''); // clear the form
+        $('#error').hide();
+            $.get("http://api.openweathermap.org/data/2.5/weather?" + zip +"&units=imperial&APPID=e80ce93a1dd17a82341a2b94bfeb2d52", function(weather){
+                    var cityName = weather.name;
+                    var humidity = weather.main['humidity'];
+                    var temp = weather.main['temp'];
+                    var tempHigh = weather.main['temp_max'];
+                    var tempLow = weather.main['temp_min'];
+                    console.log(weather);
+                    $('#city').html(cityName);
+                        $('#temp').html(temp);
+                        $('#humidity').html(humidity);
+                        $('#tempHigh').html(tempHigh);
+                        $('#tempLow').html(tempLow);
+                        
+                    $('#weather').show();
+                            
+                    //return false for the form
+
+                    
+                }, "json")
+            }
+        
+    
+    else {
+      $('#error').show(); // clear the form
+    }   
+})
+///////////////////////////////////////////////////            
+})
+ </script>
+    </body>
+</html>
